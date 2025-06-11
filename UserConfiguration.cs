@@ -1,16 +1,16 @@
 using Microsoft.EntityFrameworkCore;
+using DotNetEnv;
 class UserContext() : DbContext
 {
     public DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        var builder = WebApplication.CreateBuilder();
-        var server = builder.Configuration["SERVER_NAME"];
-        var password = builder.Configuration["PASSWORD"];
-        var databaseName = builder.Configuration["DATABASE_NAME"];
-        var username = builder.Configuration["USERNAME"];
-
+        DotNetEnv.Env.Load();
+        var server = Environment.GetEnvironmentVariable("SERVER_NAME");
+        var password = Environment.GetEnvironmentVariable("PASSWORD");
+        var databaseName = Environment.GetEnvironmentVariable("DATABASE_NAME");
+        var username = Environment.GetEnvironmentVariable("USERNAME");
         optionsBuilder.UseMySQL($"server={server}; user={username}; database={databaseName}; password={password};");
     }
     
