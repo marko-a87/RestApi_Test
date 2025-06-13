@@ -3,9 +3,10 @@ using Microsoft.EntityFrameworkCore;
 
 public class HttpMethod()
 {
-    UserContext db = new UserContext();
+    
     public async Task<Results<NotFound<string>, Ok<User>>> GetUser(int id)
     {
+        UserContext db = new UserContext();
         var user = await db.Users.FindAsync(id);
         return user is null
         ? TypedResults.NotFound("Not found.")
@@ -14,12 +15,14 @@ public class HttpMethod()
 
     public async Task<List<User>> GetUsers()
     {
+        UserContext db = new UserContext();
         List<User> users = await db.Users.ToListAsync();
         return users;
     }
 
     public async Task<Results<NotFound<string>, Ok<User>>> UpdateUser(int id, User inputUser)
     {
+        UserContext db = new UserContext();
         var user = await db.Users.FindAsync(id);
         if (user == null)
         {
@@ -40,6 +43,7 @@ public class HttpMethod()
 
     public async Task<User> CreateUser(User user)
     {
+        UserContext db = new UserContext();
         db.Users.Add(user);
         await db.SaveChangesAsync();
         Console.WriteLine("User added to database");
@@ -49,8 +53,8 @@ public class HttpMethod()
 
     public async Task<string> DeleteUser(int id)
     {
+        UserContext db = new UserContext();
         var user = await db.Users.FindAsync(id);
-
         if (user == null)
         {
             return "Not found";
